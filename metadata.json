@@ -1,0 +1,61 @@
+{
+  "metadata": {
+    "plan_version": "1.2",
+    "start_date": "2026-03-14",
+    "status": "Post-Layoff Re-entry (1 Year)",
+    "location_context": "NYC / Apartment Lifestyle"
+  },
+  "user_profile": {
+    "weight_lbs": 172,
+    "target_physique": "Massive & Defined (V-Taper focus)",
+    "daily_protein_g": 170,
+    "daily_water_liters": 4,
+    "supplements": {
+      "pre_workout": "2-3 scoops ON Amino Energy (20-30 mins prior)",
+      "post_workout": "2 scoops Whey + 5g Creatine",
+      "daily": "Magnesium Glycinate (Evening), D3/K2 (Morning)"
+    }
+  },
+  "master_workout_logic": {
+    "split_type": "5-Day Massive Re-Inflation",
+    "progressive_overload": "Increase 'Big 2' lifts by 5lbs per week",
+    "schedule": {
+      "monday": {
+        "title": "Push (Upper Chest Focus)",
+        "exercises": [
+          { "name": "Incline DB Press", "sets": "3-4", "reps": "8-10", "cue": "45° Incline; slow stretch" },
+          { "name": "Standing DB Press", "sets": "3", "reps": "8-10", "cue": "Squeeze glutes; no back arch" },
+          { "name": "Lateral Raises", "sets": "4", "reps": "15", "cue": "Lead with elbows; pinkies up" },
+          { "name": "Cable Flyes", "sets": "3", "reps": "12-15", "cue": "1s squeeze at center" },
+          { "name": "Tricep Pushdowns", "sets": "3", "reps": "12-15", "cue": "Elbows bolted to ribs" }
+        ]
+      },
+      "tuesday": {
+        "title": "Pull (Width Focus)",
+        "exercises": [
+          { "name": "Lat Pulldowns", "sets": "4", "reps": "8-10", "cue": "Thumbless grip; pull with elbows" },
+          { "name": "Seated Cable Rows", "sets": "3", "reps": "10-12", "cue": "Stay upright; retract scapula" },
+          { "name": "Face Pulls", "sets": "3", "reps": "15", "cue": "Rope to forehead; pull apart" },
+          { "name": "Rope Hammer Curls", "sets": "3", "reps": "12-15", "cue": "Flare rope ends at top" },
+          { "name": "Incline DB Curls", "sets": "3", "reps": "12", "cue": "Full bicep stretch at bottom" },
+          { "name": "Dead Hangs", "sets": "2", "reps": "Fail", "cue": "Posture reset; decompress spine" }
+        ]
+      },
+      "wednesday": { "title": "Legs (Quad/Mass)", "exercises": ["Leg Press", "Leg Extensions", "Leg Curls", "Calves"] },
+      "thursday": { "title": "Active Recovery", "activities": ["30-min Walk", "Stretching"] },
+      "friday": { "title": "Upper Body Hypertrophy", "focus": "Volume/Pump (12-15 reps)" },
+      "saturday": { "title": "Full Leg / Core", "exercises": ["RDLs", "Goblet Squats", "Planks"] },
+      "sunday": { "title": "Full Rest / Prep", "activities": ["Factor Selection", "Sleep Focus"] }
+    }
+  },
+  "nutrition_protocol": {
+    "breakfast_1130am": "3 Eggs + 0.5c Egg Whites + 0.5 Avocado",
+    "post_workout_window": "2 Scoops Whey + 1.5c White Rice (Earned only via workout)",
+    "evening_meals": "1.5 Chicken Breasts or Factor 'Protein Plus' (>30g Protein)",
+    "dinner_final": "90/10 Beef or Factor 'Keto' Meal (Low carb focus)",
+    "factor_rules": {
+      "sodium_offset": "Add 500ml water per Factor meal",
+      "rest_day_mod": "Cut rice/carbs in half if no gym"
+    }
+  }
+}
