@@ -187,24 +187,8 @@
       white-space: nowrap;
     }
 
-    .protein-total {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #0a1a12;
-      border: 1px solid #1a3a28;
-      border-radius: 8px;
-      padding: 10px 15px;
-      margin-top: 2px;
-      font-size: 13px;
-      color: #5de0a0;
-    }
-    .protein-total strong {
-      font-size: 18px;
-      color: var(--green);
-    }
 
-    /* Nutrition rules */
+/* Nutrition rules */
     .rules {
       margin-top: 10px;
     }
@@ -375,7 +359,7 @@
     }
     .week-tag.workout { background: #1a2a05; color: var(--accent); }
     .week-tag.recovery { background: #0a1a2a; color: var(--blue); }
-    .week-tag.rest { background: #1a1a1a; color: var(--muted); }
+    .week-tag.rest { background: #0a1a2a; color: var(--blue); }
     .week-tag.history { background: #1a1218; color: #c88; }
 
     /* History detail view */
@@ -611,7 +595,7 @@ function renderWorkout(day, dayData, showClock = true) {
   const effectiveProtein = showPostWorkout ? totalProtein : restProtein;
 
   html += `<div class="nutrition">
-    <div class="section-title">Nutrition — Target ${DATA.nutrition.meals[0].protein_g + (showPostWorkout ? workoutProtein : 0) + DATA.nutrition.meals[2].protein_g + DATA.nutrition.meals[3].protein_g}g protein</div>`;
+    <div class="section-title">Nutrition — 170g Protein Goal</div>`;
 
   DATA.nutrition.meals.forEach(meal => {
     const skip = !showPostWorkout && meal.label === 'Post-Workout';
@@ -626,10 +610,6 @@ function renderWorkout(day, dayData, showClock = true) {
     </div>`;
   });
 
-  html += `<div class="protein-total">
-    <span>Total protein today</span>
-    <strong>${effectiveProtein}g / 170g</strong>
-  </div>`;
 
   if (!showPostWorkout) {
     html += `<div class="rules"><div class="rule">Rest day: white rice removed, Factor carbs halved</div></div>`;
@@ -727,20 +707,20 @@ function renderWeek(todayDate) {
     } else if (isPast && !hist) {
       cardClass += ' past';
       titleHtml = `<div class="week-workout-title">${sched.title}</div>`;
-      tagHtml = `<span class="week-tag ${sched.type}">${sched.type}</span>`;
+      tagHtml = `<span class="week-tag ${sched.type}">${sched.type === 'rest' ? 'recovery' : sched.type}</span>`;
     } else if (isToday) {
       cardClass += ' today';
       onclick = `onclick="showToday()"`;
       titleHtml = `<div class="week-workout-title">${sched.title}</div>`;
       const exList = sched.exercises ? sched.exercises.map(e => e.name).join(' · ') : sched.activities ? sched.activities.map(a => a.task).join(' · ') : '';
       detailHtml = `<div class="week-detail">${exList}</div>`;
-      tagHtml = `<span class="week-tag ${sched.type}">${sched.type}</span>`;
+      tagHtml = `<span class="week-tag ${sched.type}">${sched.type === 'rest' ? 'recovery' : sched.type}</span>`;
     } else {
       onclick = `onclick="showDay('${dayName}', '${key}')"`;
       titleHtml = `<div class="week-workout-title">${sched.title}</div>`;
       const exList = sched.exercises ? sched.exercises.map(e => e.name).join(' · ') : sched.activities ? sched.activities.map(a => a.task).join(' · ') : '';
       detailHtml = `<div class="week-detail">${exList}</div>`;
-      tagHtml = `<span class="week-tag ${sched.type}">${sched.type}</span>`;
+      tagHtml = `<span class="week-tag ${sched.type}">${sched.type === 'rest' ? 'recovery' : sched.type}</span>`;
     }
 
     html += `<div class="${cardClass}" ${onclick}>
