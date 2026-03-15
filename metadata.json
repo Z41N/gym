@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "plan_version": "1.3",
+    "plan_version": "1.4",
     "status": "Post-Layoff Re-entry (1 Year)",
     "location": "NYC / Apartment Lifestyle",
     "primary_goal": "Massive & Defined (V-Taper focus)"
@@ -19,6 +19,17 @@
     "split_type": "5-Day Massive Re-Inflation",
     "rule_of_progression": "Add 5lbs to the 'Big 2' lifts every week or 1-2 reps at current weight.",
     "schedule": {
+      "sunday": {
+        "title": "Pull (Width & V-Taper)",
+        "exercises": [
+          { "name": "Lat Pulldowns", "sets": 4, "reps": "8-10", "cue": "Thumbless grip; pull with elbows; target 80-100lbs" },
+          { "name": "Seated Cable Rows", "sets": 3, "reps": "10-12", "cue": "Stay upright; retract scapula; target 70-90lbs" },
+          { "name": "Face Pulls", "sets": 3, "reps": 15, "cue": "Rope to forehead; pull ends apart for rear delts" },
+          { "name": "Rope Hammer Curls", "sets": 3, "reps": "12-15", "cue": "Neutral grip; flare rope ends outward at peak" },
+          { "name": "Incline DB Curls", "sets": 3, "reps": 12, "cue": "Full bicep stretch at bottom; sit back on bench" },
+          { "name": "Dead Hangs", "sets": 2, "reps": "Failure", "cue": "Posture reset; decompress spine after desk work" }
+        ]
+      },
       "monday": {
         "title": "Push (Upper Chest & Shoulder Width)",
         "exercises": [
@@ -30,17 +41,6 @@
         ]
       },
       "tuesday": {
-        "title": "Pull (Width & V-Taper)",
-        "exercises": [
-          { "name": "Lat Pulldowns", "sets": 4, "reps": "8-10", "cue": "Thumbless grip; pull with elbows; target 80-100lbs" },
-          { "name": "Seated Cable Rows", "sets": 3, "reps": "10-12", "cue": "Stay upright; retract scapula; target 70-90lbs" },
-          { "name": "Face Pulls", "sets": 3, "reps": 15, "cue": "Rope to forehead; pull ends apart for rear delts" },
-          { "name": "Rope Hammer Curls", "sets": 3, "reps": "12-15", "cue": "Neutral grip; flare rope ends outward at peak" },
-          { "name": "Incline DB Curls", "sets": 3, "reps": 12, "cue": "Full bicep stretch at bottom; sit back on bench" },
-          { "name": "Dead Hangs", "sets": 2, "reps": "Failure", "cue": "Posture reset; decompress spine after desk work" }
-        ]
-      },
-      "wednesday": {
         "title": "Legs (Quad Dominant & Growth)",
         "exercises": [
           { "name": "Leg Press", "sets": 4, "reps": "10-12", "cue": "Feet shoulder-width; control the descent; target 2-3 plates" },
@@ -49,32 +49,32 @@
           { "name": "Standing Calf Raises", "sets": 4, "reps": "15-20", "cue": "Deep stretch at bottom; hold peak for 1s" }
         ]
       },
-      "thursday": {
+      "wednesday": {
         "title": "Active Recovery",
         "activities": [
-          { "task": "30-min brisk walk", "benefit": "Inflammation reduction/cardio" },
-          { "task": "Static Stretching", "benefit": "Fixing SDE2 hip tightness" }
+          { "task": "30-min brisk walk", "benefit": "Inflammation reduction / cardio base" },
+          { "task": "Static Stretching", "benefit": "Hip flexor + hamstring focus" }
         ]
       },
-      "friday": {
+      "thursday": {
         "title": "Upper Body Hypertrophy (The Pump)",
         "exercises": [
           { "name": "DB Flat Press", "sets": 3, "reps": "12-15", "cue": "Moderate weight; focus on mind-muscle connection" },
           { "name": "Single Arm Rows", "sets": 3, "reps": "12-15", "cue": "Drive elbow back; don't rotate the torso" },
-          { "name": "Lateral Raises", "sets": 3, "reps": 20, "cue": "High volume for 'capped' shoulder look" },
+          { "name": "Lateral Raises", "sets": 3, "reps": 20, "cue": "High volume for capped shoulder look" },
           { "name": "Cable Curls / Pushdowns", "sets": 3, "reps": 15, "cue": "Superset these for maximum arm pump" }
         ]
       },
-      "saturday": {
+      "friday": {
         "title": "Full Leg / Core / Posterior Chain",
         "exercises": [
           { "name": "Dumbbell RDLs", "sets": 3, "reps": "10-12", "cue": "Hinge at hips; feel stretch in hamstrings; keep back flat" },
           { "name": "Goblet Squats", "sets": 3, "reps": 12, "cue": "Hold DB at chest; keep core engaged; deep squat" },
           { "name": "Walking Lunges", "sets": 2, "reps": "10 per leg", "cue": "Large steps; keep torso upright" },
-          { "name": "Plank", "sets": 3, "reps": "60s", "cue": "Vacuum belly button to spine; 'tight' midsection focus" }
+          { "name": "Plank", "sets": 3, "reps": "60s", "cue": "Vacuum belly button to spine; tight midsection focus" }
         ]
       },
-      "sunday": {
+      "saturday": {
         "title": "Total Rest & Optimization",
         "activities": [
           { "task": "Factor Meal Selection", "benefit": "Ensuring 170g protein for the week" },
@@ -84,13 +84,15 @@
     }
   },
   "nutrition_protocol": {
-    "breakfast": "3 Eggs + 0.5c Egg Whites + 0.5 Avocado (32g P)",
-    "post_workout_window": "2 Scoops Whey + 1.5c White Rice + 5g Creatine (52g P)",
-    "meal_3": "Factor Protein Plus Meal OR 7oz Chicken + Greens (48g P)",
-    "meal_4": "Factor Keto Beef OR 1c 90/10 Ground Beef + Broccoli (38g P)",
-    "factor_integration_rules": {
-      "sodium_offset": "Add 500ml water per Factor meal to prevent puffiness",
-      "carbs_rest_day": "If no workout, remove white rice and half the Factor carbs"
-    }
+    "meals": [
+      { "label": "Breakfast (11:30am)", "description": "3 Eggs + 0.5c Egg Whites + 0.5 Avocado", "protein_g": 32 },
+      { "label": "Post-Workout", "description": "2 Scoops Whey + 1.5c White Rice + 5g Creatine", "protein_g": 52, "note": "Earned only via workout" },
+      { "label": "Meal 3", "description": "Factor Protein Plus OR 7oz Chicken + Greens", "protein_g": 48 },
+      { "label": "Dinner", "description": "Factor Keto Beef OR 1c 90/10 Ground Beef + Broccoli", "protein_g": 38 }
+    ],
+    "rules": [
+      "Add 500ml water per Factor meal to prevent puffiness",
+      "Rest day: remove white rice and halve Factor carbs"
+    ]
   }
 }

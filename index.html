@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gym</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f0f0f;
+      --surface: #1a1a1a;
+      --border: #2a2a2a;
+      --accent: #c8ff00;
+      --text: #f0f0f0;
+      --muted: #888;
+      --red: #ff4444;
+      --blue: #4a9eff;
+      --green: #44cc88;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      padding: 16px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+    .day-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .day-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+    }
+    .day-title span {
+      color: var(--accent);
+    }
+    .date-box {
+      text-align: right;
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    .date-box .time {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* Progression banner */
+    .progression {
+      background: #1a1f0a;
+      border: 1px solid #3a4a10;
+      border-left: 3px solid var(--accent);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #c8e855;
+      margin-bottom: 20px;
+    }
+    .progression strong { color: var(--accent); }
+
+    /* Section */
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    /* Exercise cards */
+    .exercises { margin-bottom: 24px; }
+    .exercise-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 13px 15px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .ex-num {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      min-width: 18px;
+    }
+    .ex-body { flex: 1; }
+    .ex-name {
+      font-weight: 600;
+      font-size: 15px;
+    }
+    .ex-cue {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .ex-meta {
+      text-align: right;
+      white-space: nowrap;
+    }
+    .ex-sets {
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--accent);
+    }
+    .ex-reps {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* Activity cards (rest/recovery days) */
+    .activity-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 13px 15px;
+      margin-bottom: 8px;
+    }
+    .activity-task {
+      font-weight: 600;
+      font-size: 15px;
+    }
+    .activity-benefit {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* Nutrition */
+    .nutrition { margin-bottom: 24px; }
+    .meal-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 13px 15px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .meal-body { flex: 1; }
+    .meal-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+    .meal-desc {
+      font-weight: 500;
+      font-size: 14px;
+    }
+    .meal-note {
+      font-size: 11px;
+      color: #888;
+      font-style: italic;
+      margin-top: 2px;
+    }
+    .meal-protein {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--green);
+      white-space: nowrap;
+    }
+
+    .protein-total {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #0a1a12;
+      border: 1px solid #1a3a28;
+      border-radius: 8px;
+      padding: 10px 15px;
+      margin-top: 2px;
+      font-size: 13px;
+      color: #5de0a0;
+    }
+    .protein-total strong {
+      font-size: 18px;
+      color: var(--green);
+    }
+
+    /* Nutrition rules */
+    .rules {
+      margin-top: 10px;
+    }
+    .rule {
+      display: flex;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--muted);
+      padding: 4px 0;
+      border-top: 1px solid var(--border);
+    }
+    .rule:first-child { border-top: none; }
+    .rule::before { content: "—"; color: #444; flex-shrink: 0; }
+
+    /* Supplements */
+    .supplements { margin-bottom: 24px; }
+    .supp-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 13px 15px;
+      margin-bottom: 8px;
+    }
+    .supp-timing {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--blue);
+      margin-bottom: 2px;
+    }
+    .supp-desc {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    /* Rest day header */
+    .rest-header {
+      text-align: center;
+      padding: 24px 0 16px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .rest-header .rest-icon {
+      font-size: 40px;
+      display: block;
+      margin-bottom: 8px;
+    }
+    .rest-header .rest-text {
+      font-size: 15px;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* Water */
+    .water-bar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 15px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+    }
+    .water-bar .label { color: var(--muted); }
+    .water-bar .val { font-weight: 700; color: var(--blue); font-size: 16px; }
+
+    @media (max-width: 400px) {
+      .day-title { font-size: 20px; }
+      body { padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+const DATA = {
+  "split_type": "5-Day Massive Re-Inflation",
+  "rule_of_progression": "Add 5lbs to the 'Big 2' lifts every week or 1-2 reps at current weight.",
+  "schedule": {
+    "sunday": {
+      "title": "Pull",
+      "subtitle": "Width & V-Taper",
+      "type": "workout",
+      "exercises": [
+        { "name": "Lat Pulldowns", "sets": 4, "reps": "8-10", "cue": "Thumbless grip; pull with elbows; target 80-100lbs" },
+        { "name": "Seated Cable Rows", "sets": 3, "reps": "10-12", "cue": "Stay upright; retract scapula; target 70-90lbs" },
+        { "name": "Face Pulls", "sets": 3, "reps": 15, "cue": "Rope to forehead; pull ends apart for rear delts" },
+        { "name": "Rope Hammer Curls", "sets": 3, "reps": "12-15", "cue": "Neutral grip; flare rope ends outward at peak" },
+        { "name": "Incline DB Curls", "sets": 3, "reps": 12, "cue": "Full bicep stretch at bottom; sit back on bench" },
+        { "name": "Dead Hangs", "sets": 2, "reps": "Failure", "cue": "Posture reset; decompress spine after desk work" }
+      ]
+    },
+    "monday": {
+      "title": "Push",
+      "subtitle": "Upper Chest & Shoulder Width",
+      "type": "workout",
+      "exercises": [
+        { "name": "Incline DB Press", "sets": 4, "reps": "8-10", "cue": "45deg Incline; slow stretch; target 35-45lbs" },
+        { "name": "Standing DB Press", "sets": 3, "reps": "8-10", "cue": "Squeeze glutes; standing for posture; target 25-35lbs" },
+        { "name": "Lateral Raises", "sets": 4, "reps": 15, "cue": "Lead with elbows; pinkies up for side delt width" },
+        { "name": "Cable Flyes", "sets": 3, "reps": "12-15", "cue": "1s squeeze at center to etch chest line" },
+        { "name": "Tricep Rope Pushdowns", "sets": 3, "reps": "12-15", "cue": "Elbows bolted to ribs; pull rope apart at bottom" }
+      ]
+    },
+    "tuesday": {
+      "title": "Legs",
+      "subtitle": "Quad Dominant & Growth",
+      "type": "workout",
+      "exercises": [
+        { "name": "Leg Press", "sets": 4, "reps": "10-12", "cue": "Feet shoulder-width; control the descent; target 2-3 plates" },
+        { "name": "Leg Extensions", "sets": 3, "reps": 15, "cue": "2s pause/squeeze at the top for quad definition" },
+        { "name": "Seated Leg Curls", "sets": 3, "reps": "12-15", "cue": "Focus on the burn; slow return to starting position" },
+        { "name": "Standing Calf Raises", "sets": 4, "reps": "15-20", "cue": "Deep stretch at bottom; hold peak for 1s" }
+      ]
+    },
+    "wednesday": {
+      "title": "Active Recovery",
+      "subtitle": "Move & Restore",
+      "type": "recovery",
+      "activities": [
+        { "task": "30-min brisk walk", "benefit": "Inflammation reduction / cardio base" },
+        { "task": "Static Stretching", "benefit": "Hip flexor + hamstring focus" }
+      ]
+    },
+    "thursday": {
+      "title": "Upper Hypertrophy",
+      "subtitle": "The Pump",
+      "type": "workout",
+      "exercises": [
+        { "name": "DB Flat Press", "sets": 3, "reps": "12-15", "cue": "Moderate weight; focus on mind-muscle connection" },
+        { "name": "Single Arm Rows", "sets": 3, "reps": "12-15", "cue": "Drive elbow back; don't rotate the torso" },
+        { "name": "Lateral Raises", "sets": 3, "reps": 20, "cue": "High volume for capped shoulder look" },
+        { "name": "Cable Curls / Pushdowns", "sets": 3, "reps": 15, "cue": "Superset these for maximum arm pump" }
+      ]
+    },
+    "friday": {
+      "title": "Full Leg + Core",
+      "subtitle": "Posterior Chain",
+      "type": "workout",
+      "exercises": [
+        { "name": "Dumbbell RDLs", "sets": 3, "reps": "10-12", "cue": "Hinge at hips; feel stretch in hamstrings; keep back flat" },
+        { "name": "Goblet Squats", "sets": 3, "reps": 12, "cue": "Hold DB at chest; keep core engaged; deep squat" },
+        { "name": "Walking Lunges", "sets": 2, "reps": "10 per leg", "cue": "Large steps; keep torso upright" },
+        { "name": "Plank", "sets": 3, "reps": "60s", "cue": "Vacuum belly button to spine; tight midsection focus" }
+      ]
+    },
+    "saturday": {
+      "title": "Rest",
+      "subtitle": "Total Recovery & Optimization",
+      "type": "rest",
+      "activities": [
+        { "task": "Factor Meal Selection", "benefit": "Locking in 170g protein for the week" },
+        { "task": "8+ Hours Sleep", "benefit": "CNS recovery from 5-day split" }
+      ]
+    }
+  },
+  "nutrition": {
+    "meals": [
+      { "label": "Breakfast", "time": "11:30am", "description": "3 Eggs + 0.5c Egg Whites + 0.5 Avocado", "protein_g": 32, "note": null },
+      { "label": "Post-Workout", "time": null, "description": "2 Scoops Whey + 1.5c White Rice + 5g Creatine", "protein_g": 52, "note": "Workout days only" },
+      { "label": "Meal 3", "time": null, "description": "Factor Protein Plus OR 7oz Chicken + Greens", "protein_g": 48, "note": null },
+      { "label": "Dinner", "time": null, "description": "Factor Keto Beef OR 90/10 Ground Beef + Broccoli", "protein_g": 38, "note": null }
+    ],
+    "rules": [
+      "Add 500ml water per Factor meal to prevent puffiness",
+      "Rest day: remove white rice and halve Factor carbs"
+    ]
+  },
+  "supplements": [
+    { "timing": "Pre-Workout", "desc": "1-2 scoops ON Amino Energy (20-30 mins prior)" },
+    { "timing": "Post-Workout", "desc": "2 scoops Whey (25g/scoop) + 5g Creatine" },
+    { "timing": "Evening", "desc": "Magnesium Glycinate — muscle recovery & sleep" }
+  ]
+};
+
+const DAYS = ["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
+
+function formatTime(d) {
+  let h = d.getHours(), m = d.getMinutes();
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  return `${h}:${String(m).padStart(2,'0')} ${ampm}`;
+}
+
+function formatDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+}
+
+function cap(s) {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+function renderWorkout(day, dayData) {
+  const isRest = dayData.type === 'rest';
+  const isRecovery = dayData.type === 'recovery';
+  const isWorkout = dayData.type === 'workout';
+
+  const now = new Date();
+  const totalProtein = DATA.nutrition.meals.reduce((s, m) => s + m.protein_g, 0);
+  const workoutProtein = DATA.nutrition.meals.find(m => m.label === 'Post-Workout').protein_g;
+  const restProtein = totalProtein - workoutProtein;
+
+  let html = '';
+
+  // Header
+  html += `<div class="header">
+    <div>
+      <div class="day-label">${cap(day)}</div>
+      <div class="day-title"><span>${dayData.title}</span>${dayData.subtitle ? '<br><small style="font-size:14px;color:#888;font-weight:400">' + dayData.subtitle + '</small>' : ''}</div>
+    </div>
+    <div class="date-box">
+      <div class="time">${formatTime(now)}</div>
+      <div>${formatDate(now)}</div>
+    </div>
+  </div>`;
+
+  // Progression banner (workout days only)
+  if (isWorkout) {
+    html += `<div class="progression">
+      <strong>Progression:</strong> ${DATA.rule_of_progression}
+    </div>`;
+  }
+
+  // Workout section
+  if (isWorkout) {
+    html += `<div class="exercises">
+      <div class="section-title">Today's Lifts</div>`;
+    dayData.exercises.forEach((ex, i) => {
+      html += `<div class="exercise-card">
+        <div class="ex-num">${i + 1}</div>
+        <div class="ex-body">
+          <div class="ex-name">${ex.name}</div>
+          <div class="ex-cue">${ex.cue}</div>
+        </div>
+        <div class="ex-meta">
+          <div class="ex-sets">${ex.sets} x ${ex.reps}</div>
+          <div class="ex-reps">sets x reps</div>
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  // Recovery / Rest activities
+  if (isRecovery || isRest) {
+    if (isRest) {
+      html += `<div class="rest-header">
+        <span class="rest-icon">&#x1F4AA;</span>
+        <div class="rest-text">Rest day. Recover hard.</div>
+      </div>`;
+    }
+    html += `<div class="exercises">
+      <div class="section-title">${isRest ? 'Priorities' : 'Activities'}</div>`;
+    dayData.activities.forEach(act => {
+      html += `<div class="activity-card">
+        <div class="activity-task">${act.task}</div>
+        <div class="activity-benefit">${act.benefit}</div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  // Nutrition
+  const showPostWorkout = isWorkout;
+  const effectiveProtein = showPostWorkout ? totalProtein : restProtein;
+
+  html += `<div class="nutrition">
+    <div class="section-title">Nutrition — Target ${DATA.nutrition.meals[0].protein_g + (showPostWorkout ? workoutProtein : 0) + DATA.nutrition.meals[2].protein_g + DATA.nutrition.meals[3].protein_g}g protein</div>`;
+
+  DATA.nutrition.meals.forEach(meal => {
+    const skip = !showPostWorkout && meal.label === 'Post-Workout';
+    if (skip) return;
+    html += `<div class="meal-card">
+      <div class="meal-body">
+        <div class="meal-label">${meal.label}${meal.time ? ' · ' + meal.time : ''}</div>
+        <div class="meal-desc">${meal.description}</div>
+        ${meal.note ? `<div class="meal-note">${meal.note}</div>` : ''}
+      </div>
+      <div class="meal-protein">${meal.protein_g}g</div>
+    </div>`;
+  });
+
+  html += `<div class="protein-total">
+    <span>Total protein today</span>
+    <strong>${effectiveProtein}g / 170g</strong>
+  </div>`;
+
+  if (!showPostWorkout) {
+    html += `<div class="rules"><div class="rule">Rest day: white rice removed, Factor carbs halved</div></div>`;
+  }
+
+  html += `<div class="rules">`;
+  DATA.nutrition.rules.slice(0,1).forEach(r => {
+    html += `<div class="rule">${r}</div>`;
+  });
+  html += `</div></div>`;
+
+  // Water
+  html += `<div class="water-bar">
+    <span class="label">Daily water target</span>
+    <span class="val">4 Liters</span>
+  </div>`;
+
+  // Supplements
+  html += `<div class="supplements">
+    <div class="section-title">Supplements</div>`;
+  DATA.supplements.forEach(s => {
+    const show = isWorkout || s.timing === 'Evening';
+    if (!show) return;
+    html += `<div class="supp-card">
+      <div class="supp-timing">${s.timing}</div>
+      <div class="supp-desc">${s.desc}</div>
+    </div>`;
+  });
+  html += `</div>`;
+
+  return html;
+}
+
+function init() {
+  const now = new Date();
+  const dayName = DAYS[now.getDay()];
+  const dayData = DATA.schedule[dayName];
+  document.getElementById('app').innerHTML = renderWorkout(dayName, dayData);
+}
+
+// Refresh time every minute
+init();
+setInterval(() => {
+  const timeEl = document.querySelector('.time');
+  if (timeEl) timeEl.textContent = formatTime(new Date());
+}, 60000);
+</script>
+
+</body>
+</html>
