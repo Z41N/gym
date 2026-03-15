@@ -1,10 +1,44 @@
 {
   "metadata": {
-    "plan_version": "1.4",
+    "plan_version": "1.5",
     "status": "Post-Layoff Re-entry (1 Year)",
     "location": "NYC / Apartment Lifestyle",
-    "primary_goal": "Massive & Defined (V-Taper focus)"
+    "primary_goal": "Massive & Defined (V-Taper focus)",
+    "program_start_date": "2026-03-11",
+    "permanent_cycle_start": "2026-03-15"
   },
+  "activity_history": [
+    {
+      "date": "2026-03-11",
+      "session_type": "Initial Re-Entry",
+      "summary": "First day back after 1-year layoff. Focused on neurological wake-up and foundational movements.",
+      "note": "Established 170g protein goal; introduced 11:30 AM breakfast start."
+    },
+    {
+      "date": "2026-03-12",
+      "session_type": "Neurological Priming",
+      "summary": "Light upper body volume to assess joint soreness and recovery capacity.",
+      "note": "Standardized the No-Puff carb-backloading strategy."
+    },
+    {
+      "date": "2026-03-13",
+      "session_type": "Active Recovery",
+      "summary": "Full rest from lifting. Optimized hydration (4L goal) to flush initial soreness.",
+      "note": "Introduced Factor meal integration rules for efficiency."
+    },
+    {
+      "date": "2026-03-14",
+      "session_type": "Push Day",
+      "summary": "Official start of Massive program. Incline DB Press (upper chest) and Standing Press (posture).",
+      "note": "Working weights: 35-45lbs Incline, 25-35lbs Overhead."
+    },
+    {
+      "date": "2026-03-15",
+      "session_type": "Pull Day",
+      "summary": "Back and biceps width focus (V-Taper). Added Rope Hammer Curl flare and Dead Hangs for spine decompression.",
+      "note": "Permanent cycle begins from this point."
+    }
+  ],
   "user_profile": {
     "weight_lbs": 172,
     "daily_protein_g": 170,

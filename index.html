@@ -297,24 +297,55 @@
     .nav-btn.active { border-color: var(--accent); color: var(--accent); background: #1a1f0a; }
     .nav-btn.back { border-color: #444; color: var(--text); }
 
-    /* Week overview */
-    .week-grid { display: flex; flex-direction: column; gap: 8px; }
+    /* Week overview / timeline */
+    .week-grid { display: flex; flex-direction: column; gap: 6px; }
+    .week-section-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #444;
+      padding: 8px 2px 2px;
+    }
     .week-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 12px 15px;
+      padding: 11px 14px;
       cursor: pointer;
       transition: border-color 0.15s;
       display: flex;
       align-items: flex-start;
-      gap: 14px;
+      gap: 12px;
     }
     .week-card:hover { border-color: #444; }
     .week-card.today { border-color: var(--accent); background: #131a02; }
-    .week-card-left { min-width: 90px; }
+    .week-card.past { opacity: 0.65; }
+    .week-card.past:hover { opacity: 1; }
+    .week-card.pre-program { opacity: 0.3; cursor: default; }
+    .week-date-col {
+      min-width: 52px;
+      text-align: center;
+      padding-top: 1px;
+    }
+    .week-date-num {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--text);
+    }
+    .week-card.today .week-date-num { color: var(--accent); }
+    .week-date-month {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+    .week-card-body { flex: 1; }
     .week-day-name {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.1em;
@@ -325,12 +356,12 @@
     .week-workout-title {
       font-weight: 600;
       font-size: 14px;
+      margin-bottom: 3px;
     }
-    .week-exercises {
+    .week-detail {
       font-size: 12px;
       color: var(--muted);
-      line-height: 1.6;
-      flex: 1;
+      line-height: 1.5;
     }
     .week-tag {
       display: inline-block;
@@ -345,6 +376,27 @@
     .week-tag.workout { background: #1a2a05; color: var(--accent); }
     .week-tag.recovery { background: #0a1a2a; color: var(--blue); }
     .week-tag.rest { background: #1a1a1a; color: var(--muted); }
+    .week-tag.history { background: #1a1218; color: #c88; }
+
+    /* History detail view */
+    .history-card {
+      background: var(--surface);
+      border: 1px solid #3a2a2a;
+      border-left: 3px solid #c88;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .history-date { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+    .history-title { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+    .history-summary { font-size: 14px; line-height: 1.6; margin-bottom: 10px; }
+    .history-note {
+      font-size: 12px;
+      color: var(--muted);
+      font-style: italic;
+      border-top: 1px solid var(--border);
+      padding-top: 10px;
+    }
 
     @media (max-width: 400px) {
       .day-title { font-size: 20px; }
@@ -357,6 +409,16 @@
 <div id="app"></div>
 
 <script>
+const PROGRAM_START = new Date('2026-03-11');
+
+const HISTORY = {
+  "2026-03-11": { session_type: "Initial Re-Entry", summary: "First day back after 1-year layoff. Neurological wake-up and foundational movements.", note: "Established 170g protein goal; introduced 11:30 AM breakfast." },
+  "2026-03-12": { session_type: "Neurological Priming", summary: "Light upper body volume to assess joint soreness and recovery capacity.", note: "Standardized the No-Puff carb-backloading strategy." },
+  "2026-03-13": { session_type: "Active Recovery", summary: "Full rest from lifting. 4L hydration to flush initial soreness.", note: "Introduced Factor meal integration rules." },
+  "2026-03-14": { session_type: "Push Day", summary: "Official Massive program start. Incline DB Press + Standing Press.", note: "Working weights: 35-45lbs Incline, 25-35lbs Overhead." },
+  "2026-03-15": { session_type: "Pull Day", summary: "Back and biceps width focus (V-Taper). Rope Hammer Curl flare + Dead Hangs.", note: "Permanent weekly cycle begins from this date." }
+};
+
 const DATA = {
   "split_type": "5-Day Massive Re-Inflation",
   "rule_of_progression": "Add 5lbs to the 'Big 2' lifts every week or 1-2 reps at current weight.",
@@ -474,7 +536,7 @@ function cap(s) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
-function renderWorkout(day, dayData) {
+function renderWorkout(day, dayData, showClock = true) {
   const isRest = dayData.type === 'rest';
   const isRecovery = dayData.type === 'recovery';
   const isWorkout = dayData.type === 'workout';
@@ -492,10 +554,10 @@ function renderWorkout(day, dayData) {
       <div class="day-label">${cap(day)}</div>
       <div class="day-title"><span>${dayData.title}</span>${dayData.subtitle ? '<br><small style="font-size:14px;color:#888;font-weight:400">' + dayData.subtitle + '</small>' : ''}</div>
     </div>
-    <div class="date-box">
+    ${showClock ? `<div class="date-box">
       <div class="time">${formatTime(now)}</div>
       <div>${formatDate(now)}</div>
-    </div>
+    </div>` : ''}
   </div>`;
 
   // Progression banner (workout days only)
@@ -601,32 +663,97 @@ function renderWorkout(day, dayData) {
   return html;
 }
 
-function renderWeek(todayName) {
-  let html = `<div class="nav">
-    <button class="nav-btn active">Today</button>
-    <button class="nav-btn active" style="margin-left:auto" onclick="showWeek()">Week</button>
-  </div>`;
-  // Actually just render the week grid with a back button
-  html = `<div class="nav">
-    <button class="nav-btn back" onclick="showToday()">&#8592; Today</button>
-  </div>
-  <div class="week-grid">`;
+function dateKey(d) {
+  return d.toISOString().slice(0, 10);
+}
 
-  DAYS.forEach(day => {
-    const d = DATA.schedule[day];
-    const isToday = day === todayName;
-    const exList = d.exercises
-      ? d.exercises.map(e => e.name).join(' · ')
-      : d.activities
-        ? d.activities.map(a => a.task).join(' · ')
-        : '';
-    html += `<div class="week-card${isToday ? ' today' : ''}" onclick="showDay('${day}')">
-      <div class="week-card-left">
-        <div class="week-day-name">${cap(day)}${isToday ? ' — Today' : ''}</div>
-        <div class="week-workout-title">${d.title}</div>
-        <span class="week-tag ${d.type}">${d.type}</span>
+function renderWeek(todayDate) {
+  const today = new Date(todayDate);
+  today.setHours(0,0,0,0);
+
+  // Build 15-day window: 7 past + today + 7 future
+  const days = [];
+  for (let i = -7; i <= 7; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() + i);
+    days.push(d);
+  }
+
+  const MONTH_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const DAY_NAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+  let html = `<div class="nav">
+    <button class="nav-btn back" onclick="showToday()">&#8592; Today</button>
+  </div><div class="week-grid">`;
+
+  let lastSection = '';
+  days.forEach(d => {
+    const key = dateKey(d);
+    const isToday = key === dateKey(today);
+    const isPast = d < today;
+    const isPreProgram = d < PROGRAM_START;
+    const dayName = DAYS[d.getDay()];
+    const sched = DATA.schedule[dayName];
+    const hist = HISTORY[key];
+
+    // Section dividers
+    const section = isToday ? 'today' : isPast ? 'past' : 'upcoming';
+    if (section !== lastSection) {
+      if (section === 'today') html += `<div class="week-section-label">Today</div>`;
+      else if (section === 'upcoming') html += `<div class="week-section-label">Upcoming</div>`;
+      else if (lastSection === '') html += `<div class="week-section-label">Past</div>`;
+      lastSection = section;
+    }
+
+    const dateNum = d.getDate();
+    const dateMonth = MONTH_SHORT[d.getMonth()];
+    const dayLabel = DAY_NAMES[d.getDay()];
+
+    let cardClass = 'week-card';
+    let onclick = '';
+    let titleHtml = '';
+    let detailHtml = '';
+    let tagHtml = '';
+
+    if (isPreProgram) {
+      cardClass += ' pre-program';
+      titleHtml = `<div class="week-workout-title" style="color:var(--muted)">—</div>`;
+    } else if (isPast && hist) {
+      cardClass += ' past';
+      onclick = `onclick="showHistory('${key}')"`;
+      titleHtml = `<div class="week-workout-title">${hist.session_type}</div>`;
+      detailHtml = `<div class="week-detail">${hist.summary}</div>`;
+      tagHtml = `<span class="week-tag history">completed</span>`;
+    } else if (isPast && !hist) {
+      cardClass += ' past';
+      titleHtml = `<div class="week-workout-title">${sched.title}</div>`;
+      tagHtml = `<span class="week-tag ${sched.type}">${sched.type}</span>`;
+    } else if (isToday) {
+      cardClass += ' today';
+      onclick = `onclick="showToday()"`;
+      titleHtml = `<div class="week-workout-title">${sched.title}</div>`;
+      const exList = sched.exercises ? sched.exercises.map(e => e.name).join(' · ') : sched.activities ? sched.activities.map(a => a.task).join(' · ') : '';
+      detailHtml = `<div class="week-detail">${exList}</div>`;
+      tagHtml = `<span class="week-tag ${sched.type}">${sched.type}</span>`;
+    } else {
+      onclick = `onclick="showDay('${dayName}', '${key}')"`;
+      titleHtml = `<div class="week-workout-title">${sched.title}</div>`;
+      const exList = sched.exercises ? sched.exercises.map(e => e.name).join(' · ') : sched.activities ? sched.activities.map(a => a.task).join(' · ') : '';
+      detailHtml = `<div class="week-detail">${exList}</div>`;
+      tagHtml = `<span class="week-tag ${sched.type}">${sched.type}</span>`;
+    }
+
+    html += `<div class="${cardClass}" ${onclick}>
+      <div class="week-date-col">
+        <div class="week-date-num">${dateNum}</div>
+        <div class="week-date-month">${dateMonth}</div>
       </div>
-      <div class="week-exercises">${exList}</div>
+      <div class="week-card-body">
+        <div class="week-day-name">${dayLabel}${isToday ? ' — Today' : ''}</div>
+        ${titleHtml}
+        ${detailHtml}
+        ${tagHtml}
+      </div>
     </div>`;
   });
 
@@ -634,17 +761,40 @@ function renderWeek(todayName) {
   return html;
 }
 
-function renderDayView(day, todayName) {
-  const dayData = DATA.schedule[day];
-  const isToday = day === todayName;
+function renderHistoryView(key) {
+  const hist = HISTORY[key];
+  const d = new Date(key);
+  const DAY_NAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const MONTH = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   let html = `<div class="nav">
     <button class="nav-btn back" onclick="showWeek()">&#8592; Week</button>
-    ${isToday ? '' : `<button class="nav-btn" onclick="showToday()" style="margin-left:auto">Today</button>`}
+    <button class="nav-btn" onclick="showToday()" style="margin-left:auto">Today</button>
+  </div>
+  <div class="history-card">
+    <div class="history-date">${DAY_NAMES[d.getDay()]}, ${MONTH[d.getMonth()]} ${d.getDate()}</div>
+    <div class="history-title">${hist.session_type}</div>
+    <div class="history-summary">${hist.summary}</div>
+    <div class="history-note">${hist.note}</div>
   </div>`;
-  html += renderWorkout(day, dayData);
   return html;
 }
 
+function renderDayView(dayName, dateLabel) {
+  const dayData = DATA.schedule[dayName];
+  const d = new Date(dateLabel);
+  const MONTH = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const DAY_NAMES_FULL = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const dateStr = `${DAY_NAMES_FULL[d.getDay()]}, ${MONTH[d.getMonth()]} ${d.getDate()}`;
+  let html = `<div class="nav">
+    <button class="nav-btn back" onclick="showWeek()">&#8592; Week</button>
+    <button class="nav-btn" onclick="showToday()" style="margin-left:auto">Today</button>
+  </div>
+  <div style="font-size:12px;color:var(--muted);margin-bottom:16px">${dateStr}</div>`;
+  html += renderWorkout(dayName, dayData, false);
+  return html;
+}
+
+let _todayDate = new Date();
 let _todayName = '';
 
 function showToday() {
@@ -655,16 +805,24 @@ function showToday() {
 }
 
 function showWeek() {
-  document.getElementById('app').innerHTML = renderWeek(_todayName);
+  document.getElementById('app').innerHTML = renderWeek(_todayDate);
+  // Scroll today into view
+  const todayCard = document.querySelector('.week-card.today');
+  if (todayCard) todayCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
-function showDay(day) {
-  document.getElementById('app').innerHTML = renderDayView(day, _todayName);
+function showDay(dayName, dateLabel) {
+  document.getElementById('app').innerHTML = renderDayView(dayName, dateLabel);
+}
+
+function showHistory(key) {
+  document.getElementById('app').innerHTML = renderHistoryView(key);
 }
 
 function init() {
-  const now = new Date();
-  _todayName = DAYS[now.getDay()];
+  _todayDate = new Date();
+  _todayDate.setHours(0,0,0,0);
+  _todayName = DAYS[_todayDate.getDay()];
   showToday();
 }
 
